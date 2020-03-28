@@ -1,65 +1,31 @@
-# bookmarksng README
+# Bookmarks NG
 
-This is the README for your extension "bookmarksng". After writing up a brief description, we recommend including the following sections.
+Bookmark lines of code to ⚡️ quickly jump to later.  
+Inspired by Sublime Text 3 Bookmarks.
+
+<a href="https://github.com/chestozo/vscode-bookmarksng/blob/master/images/demo2.gif" target="_blank"><img src="https://github.com/chestozo/vscode-bookmarksng/blob/master/images/preview.png?raw=true" width="520px" alt="Click for demo gif" title="Click for demo gif" /></a>
+
+
+## Shortcuts
+
+These shortcuts are preset (can be modified in Settings):
+
+- `Cmd+B` (`Ctrl+B`) — toggle bookmarks (multi-cursor supported)
+- `Cmd+Shift+B` (`Ctrl+Shift+B`) — clear all bookmarks in current file
+- `F2` — move cursor to the next bookmarked line of code (cursor is moved at the end of the line)
+- `F2+Shift` — move cursor to the previous bookmarked line of code (cursor is moved at the end of the line)
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **multi-cursor supported!** — add multiple bookmarks with a single shortcut / command run
+- bookmarks are set for lines (not for selection ranges)
+- context dependent bookmarks toggle
+  - for single cursor mode - normal bookmark toggle is performed
+  - for multi-cursor - bookmarks are set if there is at least one line without a bookmark. Otherwise bookmarks are unset
+- remove bookmarks inside multi-line selection on bookmark toggle. Works only for single multi-line selection
+- navigation to next / previous bookmark with a shortcut
 
-For example if there is an image subfolder under your extension project workspace:
+## Thank you!
 
-\!\[feature X\]\(images/feature-x.png\)
+<a href="https://paypal.me/rkartsev" target="_blank"><img src="https://github.com/chestozo/vscode-bookmarksng/blob/master/images/dbtn.png?raw=true" width="120px" /></a>
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**

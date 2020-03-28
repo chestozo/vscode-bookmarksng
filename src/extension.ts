@@ -1,69 +1,86 @@
-import * as vscode from 'vscode';
+import * as vscode from 'vscode'
+import { bookmarksManager } from '../core/bookmarks'
 
-let bookmarkLines: { [key: string]: vscode.TextEditorDecorationType } = {};
+const DEFAULT_COLOR = '#333'
 
-function createLineDecoration(context: vscode.ExtensionContext): vscode.TextEditorDecorationType {
-
-	const decorationOptions: vscode.DecorationRenderOptions = {
-		gutterIconPath: context.asAbsolutePath("images/bookmark.png"),
-		// gutterIconPath: context.asAbsolutePath("images/icon.svg"),
-		// gutterIconPath: context.asAbsolutePath("images/icon2.svg"),
-	};
-	decorationOptions.isWholeLine = true;
-	return vscode.window.createTextEditorDecorationType(decorationOptions);
-}
-
-const toogleBookmarks = (context: vscode.ExtensionContext) => {
-	if (!vscode.window.activeTextEditor) {
-		return;
-	}
-	
-	const selections = vscode.window.activeTextEditor.selections;
-	let hasNewBookmarks = false;
-	const pairs = [];
-	
-	for (let selection of selections) {
-		const position = selection.active;
-		const key: string = `b${position.line}`;
-		hasNewBookmarks = hasNewBookmarks || !bookmarkLines[key];
-
-		// We create new decorator for each line that they can be disposed independently.
-		bookmarkLines[key] = bookmarkLines[key] || createLineDecoration(context);
-
-		pairs.push({ decoration: bookmarkLines[key], position, key });
-	}
-
-	if (hasNewBookmarks) {
-		pairs.forEach(({ decoration, position }) => vscode.window.activeTextEditor!.setDecorations(decoration, [new vscode.Range(position, position)]))
-	} else {
-		pairs.forEach(({ decoration, key }) => {
-			decoration.dispose();
-			delete bookmarkLines[key];
-		});
-	}
-};
-
-const clearBookmarks = () => {
-	if (!vscode.window.activeTextEditor) {
-		return;
-	}
-
-	Object.values(bookmarkLines).forEach((decoration) => decoration.dispose())
-	bookmarkLines = {};
-};
+const getIconContents = (iconColor: string) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="${iconColor}"><path d="M7 5v23l1.594-1.188L16 21.25l7.406 5.563L25 28V5H7zm2 2h14v17l-6.406-4.813L16 18.75l-.594.438L9 24V7z"/></svg>`
 
 export function activate(context: vscode.ExtensionContext) {
-	context.subscriptions.push(vscode.commands.registerCommand('bookmarksNG.toogleBookmarks', () => {
-		toogleBookmarks(context);
-	}));
-	context.subscriptions.push(vscode.commands.registerCommand('bookmarksNG.clearAllBookmarks', () => {
-		clearBookmarks();
-	}));
+  bookmarksManager.init(context)
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('bookmarksNG.toogleBookmarks', () => {
+      bookmarksManager.toggleBookmarks(context)
+    })
+  )
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('bookmarksNG.clearAllBookmarks', () => {
+      bookmarksManager.clearAllBookmarks(context)
+    })
+  )
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'bookmarksNG.navigateToNextBookmark',
+      () => {
+        bookmarksManager.navigateToNext()
+      }
+    )
+  )
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'bookmarksNG.navigateToPrevBookmark',
+      () => {
+        bookmarksManager.navigateToPrev()
+      }
+    )
+  )
+
+  // Load bookmarks after active file changes.
+  vscode.window.onDidChangeActiveTextEditor(
+    (editor) => {
+      bookmarksManager.loadForFile(editor?.document.uri.fsPath, context)
+    },
+    null,
+    context.subscriptions
+  )
+
+  // The only way for now to keep bookmarks positions in sync with what is shown in VS Code.
+  // @see https://github.com/microsoft/vscode/issues/54147
+  vscode.workspace.onDidChangeTextDocument((event) => {
+    bookmarksManager.handleTextChanges(context, event.contentChanges)
+  })
+
+  vscode.workspace.onDidChangeConfiguration(async (evt) => {
+    const iconColor = vscode.workspace
+      .getConfiguration('bookmarksNG')
+      .get<string>('iconColor', '#333')
+
+    if (!evt.affectsConfiguration('bookmarksNG.iconColor')) {
+      return
+    }
+
+    const userResponse = await vscode.window.showInformationMessage(
+      `Changing icon color requires a reload`,
+      'Reload now'
+    )
+
+    if (userResponse === 'Reload now') {
+      await vscode.workspace.fs.writeFile(
+        vscode.Uri.file(context.asAbsolutePath('images/icon.svg')),
+        Buffer.from(getIconContents(iconColor))
+      )
+      await vscode.workspace.fs.writeFile(
+        vscode.Uri.file(context.asAbsolutePath('images/icond.svg')),
+        Buffer.from(getIconContents(iconColor))
+      )
+
+      vscode.commands.executeCommand('workbench.action.reloadWindow')
+    }
+  })
 }
 
 export function deactivate() {}
-
-// TODO
-// - install into VS Code
-// - publish ?
-// - save state after file closed
