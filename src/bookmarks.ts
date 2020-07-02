@@ -159,6 +159,7 @@ export const bookmarksManager = {
           createLinesRange(mainSelection.start.line, mainSelection.end.line)
         )
       ) {
+        this._saveToState(context)
         return
       }
     }
@@ -175,6 +176,8 @@ export const bookmarksManager = {
     } else {
       this._clearBookmarksAtLines(lines)
     }
+
+    this._saveToState(context)
   },
 
   clearAllBookmarks(context: vscode.ExtensionContext) {
