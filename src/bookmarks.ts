@@ -128,6 +128,10 @@ export const bookmarksManager = {
   },
 
   loadForFile(filePath: string | undefined, context: vscode.ExtensionContext) {
+    if (this.filePath === filePath) {
+      return
+    }
+
     // Dump current state first.
     this._saveToState(context)
 

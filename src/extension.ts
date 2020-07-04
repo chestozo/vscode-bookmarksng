@@ -46,6 +46,7 @@ export function activate(context: vscode.ExtensionContext) {
   // The only way for now to keep bookmarks positions in sync with what is shown in VS Code.
   // @see https://github.com/microsoft/vscode/issues/54147
   vscode.workspace.onDidChangeTextDocument((event) => {
+    bookmarksManager.loadForFile(event?.document.uri.fsPath, context)
     bookmarksManager.handleTextChanges(context, event.contentChanges)
   })
 }
