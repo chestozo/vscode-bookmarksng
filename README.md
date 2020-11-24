@@ -3,7 +3,7 @@
 Bookmark lines of code to ⚡️ quickly jump to later.  
 Inspired by Sublime Text 3 Bookmarks.
 
-<a href="https://github.com/chestozo/vscode-bookmarksng/blob/master/images/demo2.gif?raw=true" target="_blank"><img src="https://github.com/chestozo/vscode-bookmarksng/blob/master/images/preview.png?raw=true" width="520px" alt="Click for demo gif" title="Click for demo gif" /></a>
+<a href="https://github.com/chestozo/vscode-bookmarksng/blob/master/images/demo2.gif" target="_blank"><img src="https://github.com/chestozo/vscode-bookmarksng/blob/master/images/preview.png?raw=true" width="520px" alt="Click for demo gif" title="Click for demo gif" /></a>
 
 
 ## Shortcuts
