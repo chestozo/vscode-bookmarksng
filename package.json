@@ -1,5 +1,5 @@
 {
-  "version": "0.0.21",
+  "version": "0.0.22",
   "name": "bookmarksng",
   "displayName": "BookmarksNG",
   "publisher": "RK",
@@ -80,6 +80,11 @@
           "type": "boolean",
           "default": false,
           "description": "If set bookmarked line will become the topmost when using next / previous navigation commands"
+        },
+        "bookmarksNG.iconColor": {
+          "type": "string",
+          "default": "#333",
+          "description": "Change bookmark icon color"
         }
       }
     }
