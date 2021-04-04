@@ -59,7 +59,16 @@ export function activate(context: vscode.ExtensionContext) {
       .getConfiguration('bookmarksNG')
       .get<string>('iconColor', '#333')
 
-    if (iconColor !== DEFAULT_COLOR) {
+    if (!evt.affectsConfiguration('bookmarksNG.iconColor')) {
+      return
+    }
+
+    const userResponse = await vscode.window.showInformationMessage(
+      `Changing icon color requires a reload`,
+      'Reload now'
+    )
+
+    if (userResponse === 'Reload now') {
       await vscode.workspace.fs.writeFile(
         vscode.Uri.parse(context.asAbsolutePath('images/icon.svg')),
         Buffer.from(getIconContents(iconColor))
