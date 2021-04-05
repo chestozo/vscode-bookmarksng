@@ -70,11 +70,11 @@ export function activate(context: vscode.ExtensionContext) {
 
     if (userResponse === 'Reload now') {
       await vscode.workspace.fs.writeFile(
-        vscode.Uri.parse(context.asAbsolutePath('images/icon.svg')),
+        vscode.Uri.file(context.asAbsolutePath('images/icon.svg')),
         Buffer.from(getIconContents(iconColor))
       )
       await vscode.workspace.fs.writeFile(
-        vscode.Uri.parse(context.asAbsolutePath('images/icond.svg')),
+        vscode.Uri.file(context.asAbsolutePath('images/icond.svg')),
         Buffer.from(getIconContents(iconColor))
       )
 
