@@ -18,6 +18,7 @@ These shortcuts are preset (can be modified in Settings):
 ## Features
 
 - **multi-cursor supported!** — add multiple bookmarks with a single shortcut / command run
+- **change bookmark icon color** to your taste 🌈
 - bookmarks are set for lines (not for selection ranges)
 - context dependent bookmarks toggle
   - for single cursor mode - normal bookmark toggle is performed
